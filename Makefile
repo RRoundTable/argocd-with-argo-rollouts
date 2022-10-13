@@ -9,7 +9,7 @@ node-limit:
 
 argocd:
 	kubectl apply -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-
+	kubectl apply -f argocd-application-controller-clusterrolebinding.yaml
 argocd-password:
 	bash -x update-argocd-password.sh
 argo-rollouts:
