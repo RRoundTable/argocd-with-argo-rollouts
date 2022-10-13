@@ -152,5 +152,5 @@ argo-rollouts-76fcfc8d7f-j8ppw                      0/1     Running   0         
 ### Add a New Application on ArgoCD
 
 ```
-argocd app create rollouts --repo https://github.com/RRoundTable/argocd-with-argo-rollouts --path:q --dest-server https://kubernetes.default.svc --dest-namespace default
+argocd app create rollouts --repo https://github.com/RRoundTable/argocd-with-argo-rollouts --path blue-green-rollouts --dest-server https://kubernetes.default.svc --dest-namespace default
 ```
