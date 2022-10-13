@@ -8,12 +8,13 @@ node-limit:
 	pass
 
 argocd:
-	pass
+	kubectl apply -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
+argocd-password:
+	bash -x update-argocd-password.sh
 argo-rollouts:
-	pass
+	kubectl apply -f https://github.com/argoproj/argo-rollouts/releases/latest/download/install.yaml
 
-tunnel:
-	minikube tunnel --profile=$(PROFILE_NAME)
-
+port-forward:
+	kubectl port-forward svc/argocd-server 8080:443 --address 0.0.0.0
 

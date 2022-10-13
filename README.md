@@ -12,6 +12,9 @@ Blue-Green, Canary Deployment with ArgoCD
 
 ## Setup
 
+
+### Build Cluster
+
 Build minikube cluster with 3 nodes.
 
 ```
@@ -81,3 +84,50 @@ example       Ready    control-plane   115s   v1.24.1
 example-m02   Ready    <none>          79s    v1.24.1
 example-m03   Ready    <none>          47s    v1.24.1
 ```
+
+Start minikube Tunneling
+
+```
+make tunnel
+```
+
+### Deploy ArgoCD
+
+Deploy ArgoCD
+
+```
+make argocd
+```
+
+Check ArgoCD Pods.
+
+```
+kubectl get pod
+```
+
+```
+NAME                                                READY   STATUS    RESTARTS   AGE
+argocd-application-controller-0                     1/1     Running   0          89s
+argocd-applicationset-controller-677774f99d-gc9gj   1/1     Running   0          89s
+argocd-dex-server-7d897b85b-z2zjq                   1/1     Running   0          89s
+argocd-notifications-controller-75ff767c89-jwjnm    1/1     Running   0          89s
+argocd-redis-5dff748d9c-zwpvh                       1/1     Running   0          89s
+argocd-repo-server-5bd47f8b96-tq5dv                 1/1     Running   0          89s
+argocd-server-76797bdd8f-pwp7j                      1/1     Running   0          89s
+```
+
+Run port-forwarding to argocd server. `localhost:8080` is connected to `svc/argocd-server`
+
+```
+make port-forward
+```
+
+Change ArgoCd password to be `rootadmin`
+
+```
+make argocd-password
+```
+
+### Deploy Argo Rollouts
+
+
