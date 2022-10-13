@@ -128,6 +128,29 @@ Change ArgoCd password to be `rootadmin`
 make argocd-password
 ```
 
+NOTE: If you want to private repository, check [Private Repositories](https://argo-cd.readthedocs.io/en/stable/user-guide/private-repositories/)
+
+
 ### Deploy Argo Rollouts
 
+Deploy argo-rollouts
 
+```
+make argo-rollouts
+```
+
+Check argo-rollouts pod is running.
+```
+kubectl get pod
+```
+
+```
+NAME                                                READY   STATUS    RESTARTS   AGE
+argo-rollouts-76fcfc8d7f-j8ppw                      0/1     Running   0          44s
+```
+
+### Add a New Application on ArgoCD
+
+```
+argocd app create rollouts --repo https://github.com/RRoundTable/argocd-with-argo-rollouts --path:q --dest-server https://kubernetes.default.svc --dest-namespace default
+```
