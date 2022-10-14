@@ -151,6 +151,77 @@ argo-rollouts-76fcfc8d7f-j8ppw                      0/1     Running   0         
 
 ### Add a New Application on ArgoCD
 
+Create blue-green-rollout aaplication
+
 ```
-argocd app create rollouts --repo https://github.com/RRoundTable/argocd-with-argo-rollouts --path blue-green-rollouts --dest-server https://kubernetes.default.svc --dest-namespace default
+argocd app create blue-green-rollouts --repo https://github.com/RRoundTable/argocd-with-argo-rollouts --path blue-green-rollouts --dest-server https://kubernetes.default.svc --dest-namespace default
 ```
+
+```
+argocd app sync blue-green-rollouts
+```
+
+Get `blue-green-rollouts` info
+
+```
+kubectl argo rollouts get rollouts rollout-bluegreen
+```
+
+```
+Namespace:       default
+Status:          ✔ Healthy
+Strategy:        BlueGreen
+Images:          argoproj/rollouts-demo:blue (stable, active)
+Replicas:
+  Desired:       2
+  Updated:       2
+  Ready:         2
+  Available:     2
+
+NAME                                           KIND        STATUS     AGE  INFO
+⟳ rollout-bluegreen                            Rollout     ✔ Healthy  34s
+└──# revision:1
+   └──⧉ rollout-bluegreen-5ffd47b8d4           ReplicaSet  ✔ Healthy  34s  stable,active
+      ├──□ rollout-bluegreen-5ffd47b8d4-kndt5  Pod         ✔ Running  34s  ready:1/1
+      └──□ rollout-bluegreen-5ffd47b8d4-qvnd7  Pod         ✔ Running  34s  ready:1/1
+```
+
+Check application on `localhost:8080`
+
+![]
+
+
+Check bluegreen svcs are created.
+
+```
+kubectl get svc
+```
+
+```
+rollout-bluegreen-active                  ClusterIP   10.97.32.117    <none>        80/TCP                       8m11s
+rollout-bluegreen-preview                 ClusterIP   10.98.88.89     <none>        80/TCP                       8m11s
+```
+
+
+
+Check `rollout-bluegreen-active`
+
+```
+kubectl port-forward svc/rollout-bluegreen-active 3080:80
+```
+![]
+
+`rollout-bluegreen-preview`
+
+```
+kubectl port-forward svc/rollout-bluegreen-preview 4080:80
+```
+
+![]
+
+`rollout-bluegreen-preview` and `rollout-bluegreen-active` are same because no rollout occurs.
+
+
+
+
+
