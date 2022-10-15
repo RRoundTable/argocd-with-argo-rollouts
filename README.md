@@ -324,6 +324,13 @@ kubectl port-forward svc/rollout-bluegreen-preview 3080:80
 
 ## Promote Rollout
 
+NOTE: In our cluster, only 3 rollout pod can running. If we promote `rollout-bluegreen`, Additional `revision: 1` pod are created because replicas is set to 2. So there are 4 pods. 3 pods are running. 1 pod is pendding. So We have to set `maxUnavialble` to `50%`. It means during the update, 50% of desired pods can be unavailable.
+
+```
+# blue-green-rollouts
+  maxUnavailable: 50%
+```
+
 Let's promte rollouts
 
 ```
@@ -339,7 +346,6 @@ Check rollouts
 ```
 kubectl argo rollouts get rollouts bluegreen-rollout
 ```
-
 ```
 Name:            rollout-bluegreen
 Namespace:       default
@@ -353,16 +359,13 @@ Replicas:
   Ready:         2
   Available:     2
 
-NAME                                           KIND        STATUS        AGE  INFO
-⟳ rollout-bluegreen                            Rollout     ✔ Healthy     30h
-├──# revision:6
-│  └──⧉ rollout-bluegreen-674b45d9b4           ReplicaSet  ✔ Healthy     30h  stable,active
-│     ├──□ rollout-bluegreen-674b45d9b4-nwbsn  Pod         ✔ Running     11m  ready:1/1
-│     └──□ rollout-bluegreen-674b45d9b4-pc5k9  Pod         ✔ Running     11m  ready:1/1
-└──# revision:5
-   └──⧉ rollout-bluegreen-5ffd47b8d4           ReplicaSet  • ScaledDown  30h
+NAME                                           KIND        STATUS     AGE   INFO
+⟳ rollout-bluegreen                            Rollout     ✔ Healthy  2m
+└──# revision:1
+   └──⧉ rollout-bluegreen-5b88cddb5c           ReplicaSet  ✔ Healthy  111s  stable,active
+      ├──□ rollout-bluegreen-5b88cddb5c-8fzbb  Pod         ✔ Running  111s  ready:1/1
+      └──□ rollout-bluegreen-5b88cddb5c-j5dbh  Pod         ✔ Running  111s  ready:1/1
 ```
-
 Check Pod, active pod is deleted and only preview pod is running.
 
 ```
