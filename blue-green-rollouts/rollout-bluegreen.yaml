@@ -23,7 +23,7 @@ spec:
         - containerPort: 8080
         resources:
           requests:
-            cpu: "2000m"
+            memory: "1800MB"
   strategy:
     blueGreen:
       # activeService specifies the service to update with the new template hash at time of promotion.
