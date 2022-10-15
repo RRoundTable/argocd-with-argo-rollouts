@@ -303,8 +303,7 @@ rollout-bluegreen-674b45d9b4-nwbsn                  1/1     Running   0         
 
 Check Application on ArgoCD.
 
-<img width="800" alt="image" src="https://user-images.githubusercontent.com/27891090/195985867-49f6e2f5-1255-4609-ad12-062e9f69253f.png">
-
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/27891090/195986501-4400e91c-56df-4eea-884b-9bd6f0270895.png">
 
 Check `rollout-bluegreen-active`
 
