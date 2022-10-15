@@ -5,7 +5,7 @@ kind: Rollout
 metadata:
   name: rollout-bluegreen
 spec:
-  replicas: 2
+  replicas: 4
   revisionHistoryLimit: 2
   selector:
     matchLabels:
@@ -21,8 +21,11 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
+        resources:
+          requests:
+            cpu: "2000m"
   strategy:
-    blueGreen: 
+    blueGreen:
       # activeService specifies the service to update with the new template hash at time of promotion.
       # This field is mandatory for the blueGreen update strategy.
       activeService: rollout-bluegreen-active
