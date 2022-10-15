@@ -14,7 +14,7 @@ argocd-password:
 	bash -x update-argocd-password.sh
 argo-rollouts:
 	kubectl apply -f https://github.com/argoproj/argo-rollouts/releases/latest/download/install.yaml
-
+	kubectl apply -f argo-rollouts-clusterrolebinding.yaml
 port-forward:
 	kubectl port-forward svc/argocd-server 8080:443 --address 0.0.0.0
 
