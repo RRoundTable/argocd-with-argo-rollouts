@@ -186,9 +186,10 @@ NAME                                           KIND        STATUS     AGE  INFO
       └──□ rollout-bluegreen-5ffd47b8d4-qvnd7  Pod         ✔ Running  34s  ready:1/1
 ```
 
-Check application on `localhost:8080`
+Check application on `localhost:8080` (ArgoCD)
 
-![]
+<img width="700" alt="image" src="https://user-images.githubusercontent.com/27891090/195973381-4d98d19f-c9a3-46c7-9aa3-56577f31e6ad.png">
+
 
 
 Check bluegreen svcs are created.
