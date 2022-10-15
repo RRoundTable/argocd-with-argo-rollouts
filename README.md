@@ -288,13 +288,14 @@ Check `rollout-bluegreen-active`
 ```
 kubectl port-forward svc/rollout-bluegreen-active 3080:80
 ```
-![]
+<img width="500" alt="image" src="https://user-images.githubusercontent.com/27891090/195973778-d2504718-4675-4dfe-a905-3647bbf51b7c.png">
 
 `rollout-bluegreen-preview`
 
 ```
 kubectl port-forward svc/rollout-bluegreen-preview 3080:80
 ```
-![]
+
+<img width="500" alt="image" src="https://user-images.githubusercontent.com/27891090/195973756-2742fd1d-ef72-4afb-836c-36103d326170.png">
 
 `rollout-bluegreen-preview` and `rollout-bluegreen-active` are not same because rollout occurs.
