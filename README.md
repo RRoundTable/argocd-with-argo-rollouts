@@ -257,8 +257,8 @@ kubectl argo rollouts get rollouts rollout-bluegreen
 ```
 Name:            rollout-bluegreen
 Namespace:       default
-Status:          ॥ Paused
-Message:         BlueGreenPause
+Status:          ◌ Progressing
+Message:         active service cutover pending
 Strategy:        BlueGreen
 Images:          argoproj/rollouts-demo:blue (stable, active)
                  argoproj/rollouts-demo:yellow (preview)
@@ -269,19 +269,18 @@ Replicas:
   Ready:         2
   Available:     2
 
-NAME                                           KIND        STATUS     AGE    INFO
-⟳ rollout-bluegreen                            Rollout     ॥ Paused   30h
-├──# revision:6
-│  └──⧉ rollout-bluegreen-674b45d9b4           ReplicaSet  ✔ Healthy  30h    preview
-│     ├──□ rollout-bluegreen-674b45d9b4-nwbsn  Pod         ✔ Running  58s    ready:1/1
-│     └──□ rollout-bluegreen-674b45d9b4-pc5k9  Pod         ✔ Running  58s    ready:1/1
-└──# revision:5
-   └──⧉ rollout-bluegreen-5ffd47b8d4           ReplicaSet  ✔ Healthy  30h    stable,active
-      ├──□ rollout-bluegreen-5ffd47b8d4-5wjld  Pod         ✔ Running  9m58s  ready:1/1
-      └──□ rollout-bluegreen-5ffd47b8d4-qwv2k  Pod         ✔ Running  9m58s  ready:1/1
+NAME                                           KIND        STATUS         AGE    INFO
+⟳ rollout-bluegreen                            Rollout     ◌ Progressing  5m27s
+├──# revision:2
+│  └──⧉ rollout-bluegreen-5b88cddb5c           ReplicaSet  ◌ Progressing  18s    preview
+│     ├──□ rollout-bluegreen-5b88cddb5c-d9skd  Pod         ✔ Running      18s    ready:1/1
+│     └──□ rollout-bluegreen-5b88cddb5c-m5h52  Pod         ◌ Pending      18s    ready:0/1
+└──# revision:1
+   └──⧉ rollout-bluegreen-df8d78c45            ReplicaSet  ✔ Healthy      5m7s   stable,active
+      ├──□ rollout-bluegreen-df8d78c45-tv54g   Pod         ✔ Running      5m7s   ready:1/1
+      └──□ rollout-bluegreen-df8d78c45-tw757   Pod         ✔ Running      5m7s   ready:1/1
 ```
-
-And check pods, 4 pods are running(blue:2, green:2)
+And check pods, 3 pods are running(revision1:2, revision2:1), 1 pod(revision2) is pendding because in our cluster, rollout max replicas is 3.
 
 ```
 kubectl get pod | grep blueegreen
