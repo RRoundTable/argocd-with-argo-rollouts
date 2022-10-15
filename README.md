@@ -257,30 +257,39 @@ kubectl argo rollouts get rollouts rollout-bluegreen
 ```
 Name:            rollout-bluegreen
 Namespace:       default
-Status:          ◌ Progressing
-Message:         active service cutover pending
+Status:          ॥ Paused
+Message:         BlueGreenPause
 Strategy:        BlueGreen
 Images:          argoproj/rollouts-demo:blue (stable, active)
                  argoproj/rollouts-demo:yellow (preview)
 Replicas:
   Desired:       2
-  Current:       4
-  Updated:       2
+  Current:       3
+  Updated:       1
   Ready:         2
   Available:     2
 
-NAME                                           KIND        STATUS         AGE    INFO
-⟳ rollout-bluegreen                            Rollout     ◌ Progressing  5m27s
+NAME                                           KIND        STATUS     AGE  INFO
+⟳ rollout-bluegreen                            Rollout     ॥ Paused   76s
 ├──# revision:2
-│  └──⧉ rollout-bluegreen-5b88cddb5c           ReplicaSet  ◌ Progressing  18s    preview
-│     ├──□ rollout-bluegreen-5b88cddb5c-d9skd  Pod         ✔ Running      18s    ready:1/1
-│     └──□ rollout-bluegreen-5b88cddb5c-m5h52  Pod         ◌ Pending      18s    ready:0/1
+│  └──⧉ rollout-bluegreen-5b88cddb5c           ReplicaSet  ✔ Healthy  14s  preview
+│     └──□ rollout-bluegreen-5b88cddb5c-qhmdv  Pod         ✔ Running  14s  ready:1/1
 └──# revision:1
-   └──⧉ rollout-bluegreen-df8d78c45            ReplicaSet  ✔ Healthy      5m7s   stable,active
-      ├──□ rollout-bluegreen-df8d78c45-tv54g   Pod         ✔ Running      5m7s   ready:1/1
-      └──□ rollout-bluegreen-df8d78c45-tw757   Pod         ✔ Running      5m7s   ready:1/1
+   └──⧉ rollout-bluegreen-df8d78c45            ReplicaSet  ✔ Healthy  56s  stable,active
+      ├──□ rollout-bluegreen-df8d78c45-dzpn2   Pod         ✔ Running  56s  ready:1/1
+      └──□ rollout-bluegreen-df8d78c45-pcrr2   Pod         ✔ Running  56s  ready:1/1
 ```
-And check pods, 3 pods are running(revision1:2, revision2:1), 1 pod(revision2) is pendding because in our cluster, rollout max replicas is 3.
+
+In our cluster, rollout max replicas is 3. So If we want to promote bluegreen rollouts, the sum of the number of preveiw and active is 3.
+
+So Set `previewReplicaCount` as 1. (Actice `replica` is 2)
+```
+# blue-green-rollouts/rollout-bluegreen.yaml
+  previewReplicaCount: 1
+```
+
+
+And check pods, 3 pods are running(revision1:2, revision2:1)
 
 ```
 kubectl get pod | grep blueegreen
@@ -290,7 +299,6 @@ kubectl get pod | grep blueegreen
 rollout-bluegreen-5ffd47b8d4-5wjld                  1/1     Running   0          11m
 rollout-bluegreen-5ffd47b8d4-qwv2k                  1/1     Running   0          11m
 rollout-bluegreen-674b45d9b4-nwbsn                  1/1     Running   0          2m1s
-rollout-bluegreen-674b45d9b4-pc5k9                  1/1     Running   0          2m1s
 ```
 
 Check Application on ArgoCD.

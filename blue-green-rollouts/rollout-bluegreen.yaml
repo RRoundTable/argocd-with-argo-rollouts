@@ -42,6 +42,7 @@ spec:
       # This allows the preview stack to be reachable without serving production traffic.
       # This field is optional.
       previewService: rollout-bluegreen-preview
+      previewReplicaCount: 1
       # autoPromotionEnabled disables automated promotion of the new stack by pausing the rollout
       # immediately before the promotion. If omitted, the default behavior is to promote the new
       # stack as soon as the ReplicaSet are completely ready/available.
