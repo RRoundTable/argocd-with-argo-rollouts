@@ -156,15 +156,15 @@ We will deploy rollouts with `podAntiAffinity` to limit rollout pod per one node
 ```YAML
 # blue-green-rollouts/rollout-bluegreen.yaml
   affinity:
-	podAntiAffinity:
-	  requiredDuringSchedulingIgnoredDuringExecution:
-		- labelSelector:
-			matchExpressions:
-			  - key: test
-				operator: In
-				values:
-				  - test
-		  topologyKey: "kubernetes.io/hostname"
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+          matchExpressions:
+            - key: test
+              operator: In
+              values:
+                - test
+          topologyKey: "kubernetes.io/hostname"
 ```
 
 Create blue-green-rollout aaplication
