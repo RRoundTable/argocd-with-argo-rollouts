@@ -299,3 +299,75 @@ kubectl port-forward svc/rollout-bluegreen-preview 3080:80
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/27891090/195973756-2742fd1d-ef72-4afb-836c-36103d326170.png">
 
 `rollout-bluegreen-preview` and `rollout-bluegreen-active` are not same because rollout occurs.
+
+## Promote Rollout
+
+Let's promte rollouts
+
+```
+kubectl argo rollouts promote rollout-bluegreen
+```
+
+```
+rollout 'rollout-bluegreen' promoted
+```
+
+Check rollouts
+
+```
+kubectl argo rollouts get rollouts bluegreen-rollout
+```
+
+```
+Name:            rollout-bluegreen
+Namespace:       default
+Status:          ✔ Healthy
+Strategy:        BlueGreen
+Images:          argoproj/rollouts-demo:yellow (stable, active)
+Replicas:
+  Desired:       2
+  Current:       2
+  Updated:       2
+  Ready:         2
+  Available:     2
+
+NAME                                           KIND        STATUS        AGE  INFO
+⟳ rollout-bluegreen                            Rollout     ✔ Healthy     30h
+├──# revision:6
+│  └──⧉ rollout-bluegreen-674b45d9b4           ReplicaSet  ✔ Healthy     30h  stable,active
+│     ├──□ rollout-bluegreen-674b45d9b4-nwbsn  Pod         ✔ Running     11m  ready:1/1
+│     └──□ rollout-bluegreen-674b45d9b4-pc5k9  Pod         ✔ Running     11m  ready:1/1
+└──# revision:5
+   └──⧉ rollout-bluegreen-5ffd47b8d4           ReplicaSet  • ScaledDown  30h
+```
+
+Check Pod, active pod is deleted and only preview pod is running.
+
+```
+kubectl get pod | grep bluegreen
+```
+
+```
+rollout-bluegreen-674b45d9b4-nwbsn                  1/1     Running   0          12m
+rollout-bluegreen-674b45d9b4-pc5k9                  1/1     Running   0          12m
+```
+
+Check Application on ArgoCD. As you can see APP Health is `Health` status.
+
+![]
+
+Check `rollout-bluegreen-active`
+
+```
+kubectl port-forward svc/rollout-bluegreen-active 3080:80
+```
+![]
+
+`rollout-bluegreen-preview`
+
+```
+kubectl port-forward svc/rollout-bluegreen-preview 3080:80
+```
+![]
+
+`rollout-bluegreen-preview` and `rollout-bluegreen-active` are same because rollout completed.
