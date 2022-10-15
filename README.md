@@ -280,4 +280,4 @@ rollout-bluegreen-674b45d9b4-pc5k9                  1/1     Running   0         
 
 Check Application on ArgoCD. As you can see APP Health is `Suspended` status.
 
-![]
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/27891090/195973659-56b07c17-e737-47d1-9c37-6d68b41be483.png">
