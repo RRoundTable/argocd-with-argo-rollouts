@@ -293,9 +293,9 @@ rollout-bluegreen-674b45d9b4-nwbsn                  1/1     Running   0         
 rollout-bluegreen-674b45d9b4-pc5k9                  1/1     Running   0          2m1s
 ```
 
-Check Application on ArgoCD. As you can see APP Health is `Suspended` status.
+Check Application on ArgoCD.
 
-<img width="800" alt="image" src="https://user-images.githubusercontent.com/27891090/195973659-56b07c17-e737-47d1-9c37-6d68b41be483.png">
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/27891090/195985867-49f6e2f5-1255-4609-ad12-062e9f69253f.png">
 
 
 Check `rollout-bluegreen-active`
