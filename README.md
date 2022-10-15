@@ -362,7 +362,7 @@ Check `rollout-bluegreen-active`
 ```
 kubectl port-forward svc/rollout-bluegreen-active 3080:80
 ```
-<img width="500" alt="image" src="https://user-imags.githubusercontent.com/27891090/195974103-56d9d797-dd33-4c51-bfc7-2b3cb56eed40.png">
+<img width="500" alt="image" src="https://user-images.githubusercontent.com/27891090/195974705-ac67079a-a3cd-496b-b6d6-08baa36d520a.png">
 
 `rollout-bluegreen-preview`
 
