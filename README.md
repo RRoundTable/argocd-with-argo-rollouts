@@ -222,7 +222,62 @@ kubectl port-forward svc/rollout-bluegreen-preview 3080:80
 
 `rollout-bluegreen-preview` and `rollout-bluegreen-active` are same because no rollout occurs.
 
+## Rollout
+
+Rollout with image update.
+
+```
+kubectl argo rollouts set image rollout-bluegreen rollouts-demo=argoproj/rollouts-demo:yellow
+```
 
 
 
+Check `rollout-bluegreen`
 
+```
+kubectl argo rollouts get rollouts rollout-bluegreen
+```
+
+```
+Name:            rollout-bluegreen
+Namespace:       default
+Status:          ॥ Paused
+Message:         BlueGreenPause
+Strategy:        BlueGreen
+Images:          argoproj/rollouts-demo:blue (stable, active)
+                 argoproj/rollouts-demo:yellow (preview)
+Replicas:
+  Desired:       2
+  Current:       4
+  Updated:       2
+  Ready:         2
+  Available:     2
+
+NAME                                           KIND        STATUS     AGE    INFO
+⟳ rollout-bluegreen                            Rollout     ॥ Paused   30h
+├──# revision:6
+│  └──⧉ rollout-bluegreen-674b45d9b4           ReplicaSet  ✔ Healthy  30h    preview
+│     ├──□ rollout-bluegreen-674b45d9b4-nwbsn  Pod         ✔ Running  58s    ready:1/1
+│     └──□ rollout-bluegreen-674b45d9b4-pc5k9  Pod         ✔ Running  58s    ready:1/1
+└──# revision:5
+   └──⧉ rollout-bluegreen-5ffd47b8d4           ReplicaSet  ✔ Healthy  30h    stable,active
+      ├──□ rollout-bluegreen-5ffd47b8d4-5wjld  Pod         ✔ Running  9m58s  ready:1/1
+      └──□ rollout-bluegreen-5ffd47b8d4-qwv2k  Pod         ✔ Running  9m58s  ready:1/1
+```
+
+And check pods, 4 pods are running(blue:2, green:2)
+
+```
+kubectl get pod | grep blueegreen
+```
+
+```
+rollout-bluegreen-5ffd47b8d4-5wjld                  1/1     Running   0          11m
+rollout-bluegreen-5ffd47b8d4-qwv2k                  1/1     Running   0          11m
+rollout-bluegreen-674b45d9b4-nwbsn                  1/1     Running   0          2m1s
+rollout-bluegreen-674b45d9b4-pc5k9                  1/1     Running   0          2m1s
+```
+
+Check Application on ArgoCD. As you can see APP Health is `Suspended` status.
+
+![]
