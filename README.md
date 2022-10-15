@@ -352,7 +352,8 @@ rollout-bluegreen-674b45d9b4-nwbsn                  1/1     Running   0         
 rollout-bluegreen-674b45d9b4-pc5k9                  1/1     Running   0          12m
 ```
 
-Check Application on ArgoCD. As you can see APP Health is `Health` status.
+Check Application on ArgoCD. As you can see APP Health is `Healthy` status.
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/27891090/195974275-f70135c4-06ad-4efb-b4a5-dbe6fc593c8c.png">
 
 
 
@@ -361,7 +362,7 @@ Check `rollout-bluegreen-active`
 ```
 kubectl port-forward svc/rollout-bluegreen-active 3080:80
 ```
-<img width="500" alt="image" src="https://user-images.githubusercontent.com/27891090/195974103-56d9d797-dd33-4c51-bfc7-2b3cb56eed40.png">
+<img width="500" alt="image" src="https://user-imags.githubusercontent.com/27891090/195974103-56d9d797-dd33-4c51-bfc7-2b3cb56eed40.png">
 
 `rollout-bluegreen-preview`
 
