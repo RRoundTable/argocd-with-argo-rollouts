@@ -20,3 +20,11 @@ Blue-Green, Canary Deployment with ArgoCD
 ## Canary Rollout
 
 [canary-rollout](docs/canary-rollout.md)
+
+## Finalize
+
+Delete minikube cluster.
+
+```
+make finalize
+```

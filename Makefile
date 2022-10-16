@@ -18,3 +18,5 @@ argo-rollouts:
 port-forward:
 	kubectl port-forward svc/argocd-server 8080:443 --address 0.0.0.0
 
+finalize:
+	minikube delete -p $(PROFILE_NAME)
