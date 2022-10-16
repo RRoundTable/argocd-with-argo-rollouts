@@ -1,6 +1,4 @@
-
-
-### Add a New Application on ArgoCD
+## Add a New Application on ArgoCD
 
 We will deploy rollouts with `podAntiAffinity` to limit rollout pod per one node.
 
@@ -248,3 +246,17 @@ kubectl port-forward svc/rollout-bluegreen-preview 3080:80
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/27891090/195974114-0cfeebe8-9e93-4198-949b-0ade3dbce520.png">
 
 `rollout-bluegreen-preview` and `rollout-bluegreen-active` are same because rollout completed.
+
+
+## Delete `rollout-bluegreen`
+
+Delete ArgoCD Application `blue-green-rollouts`
+```
+argocd app delete blue-green-rollouts
+```
+
+Check pod
+
+```
+kubectl get pod | grep bluegreen
+```
