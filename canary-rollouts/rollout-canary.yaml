@@ -6,7 +6,7 @@ kind: Rollout
 metadata:
   name: rollout-canary
 spec:
-  replicas: 5
+  replicas: 3
   revisionHistoryLimit: 2
   selector:
     matchLabels:
@@ -15,7 +15,18 @@ spec:
     metadata:
       labels:
         app: rollout-canary
+        test: test
     spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: test
+                    operator: In
+                    values:
+                      - test
+              topologyKey: "kubernetes.io/hostname"
       containers:
       - name: rollouts-demo
         image: argoproj/rollouts-demo:blue
