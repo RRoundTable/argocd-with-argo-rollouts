@@ -35,3 +35,16 @@ spec:
       - pause: {duration: 20s}
       - setWeight: 80
       - pause: {duration: 20s}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rollout-canary
+spec:
+  ports:
+  - port: 80
+    targetPort: http
+    protocol: TCP
+    name: http
+  selector:
+    app: rollout-canary
