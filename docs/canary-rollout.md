@@ -205,6 +205,12 @@ NAME                                        KIND        STATUS     AGE    INFO
       └──□ rollout-canary-65ccbcd464-xrhw2  Pod         ✔ Running  2m55s  ready:1/1
 ```
 
+In ArgoCD
+
+
+<img width="800" alt="스크린샷 2022-10-17 오후 11 00 25" src="https://user-images.githubusercontent.com/27891090/196199653-5ef0c330-c8b8-4c5b-9f79-85203d01bc77.png">
+
+
 After a about 40s,
 
 ```
@@ -235,6 +241,12 @@ NAME                                        KIND        STATUS         AGE    IN
    └──⧉ rollout-canary-65ccbcd464           ReplicaSet  • ScaledDown   3m34s  stable
       └──□ rollout-canary-65ccbcd464-xrhw2  Pod         ◌ Terminating  3m34s  ready:1/1
 ```
+
+In ArgoCD
+
+<img width="800" alt="스크린샷 2022-10-17 오후 11 01 06" src="https://user-images.githubusercontent.com/27891090/196199714-7924ff12-46ec-49f1-ad72-675fa170c34c.png">
+
+
 
 ## Delete `rollout-canary`
 
