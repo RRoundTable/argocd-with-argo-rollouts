@@ -118,7 +118,7 @@ Rollout with image update.
 kubectl argo rollouts set image rollout-canary rollouts-demo=argoproj/rollouts-demo:yellow
 ```
 
-Check `rollout-bluegreen`
+Check `rollout-canary`. As you can see, the number of revision:1 pods is two and the number of revision:2 pod is one. Because `maxUnavailable` is `40%`, one of revision:1 pods can be shutdown and one pod of reivision:2 is created.
 
 ```
 kubectl argo rollouts get rollouts canary
