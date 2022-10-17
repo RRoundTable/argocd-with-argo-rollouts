@@ -18,7 +18,7 @@ Blue-Green, Canary Deployment with ArgoCD
 [bluegreen-rollout](docs/bluegreen-rollout.md)
 
 ## Canary Rollout
-TODO
+
 [canary-rollout](docs/canary-rollout.md)
 
 ## Finalize
