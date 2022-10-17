@@ -28,33 +28,71 @@ argocd app sync canary-rollouts
 
 Get `canary-rollouts` info
 
-In our cluster, rollout max replicas is 3. So If we want to promote canary rollouts, we need to set replicas as 2. (1 replica is for a new pod)
+In our cluster, rollout max replicas is 3. So If we want to promote canary rollouts with replicas 3, we need to use `maxUnavailable`.
+
+```
+# canary-rollouts/rollout-canary.yaml
+
+  strategy:
+    canary:
+      maxUnavailable: 40%
+```
+
+
 ```
 kubectl argo rollouts get rollouts rollout-canary
 ```
 
 ```
-Name:            rollout-canary
 Namespace:       default
-Status:          ✔ Healthy
+Status:          ॥ Paused
+Message:         CanaryPauseStep
 Strategy:        Canary
-  Step:          8/8
-  SetWeight:     100
-  ActualWeight:  100
+  Step:          1/4
+  SetWeight:     33
+  ActualWeight:  33
 Images:          argoproj/rollouts-demo:blue (stable)
+                 argoproj/rollouts-demo:yellow (canary)
 Replicas:
-  Desired:       2
-  Current:       2
-  Updated:       2
-  Ready:         2
-  Available:     2
+  Desired:       3
+  Current:       3
+  Updated:       1
+  Ready:         3
+  Available:     3
 
-NAME                                        KIND        STATUS     AGE  INFO
-⟳ rollout-canary                            Rollout     ✔ Healthy  19s
+NAME                                        KIND        STATUS     AGE    INFO
+⟳ rollout-canary                            Rollout     ॥ Paused   5m31s
+├──# revision:2
+│  └──⧉ rollout-canary-59dcc859bd           ReplicaSet  ✔ Healthy  62s    canary
+│     └──□ rollout-canary-59dcc859bd-rxnqh  Pod         ✔ Running  62s    ready:1/1
 └──# revision:1
-   └──⧉ rollout-canary-65ccbcd464           ReplicaSet  ✔ Healthy  19s  stable
-      ├──□ rollout-canary-65ccbcd464-4lgwj  Pod         ✔ Running  19s  ready:1/1
-      └──□ rollout-canary-65ccbcd464-m5xff  Pod         ✔ Running  19s  ready:1/1
+   └──⧉ rollout-canary-65ccbcd464           ReplicaSet  ✔ Healthy  5m31s  stable
+      ├──□ rollout-canary-65ccbcd464-fftpr  Pod         ✔ Running  5m31s  ready:1/1
+      └──□ rollout-canary-65ccbcd464-smdx9  Pod         ✔ Running  5m31s  ready:1/1vamespace:       default
+Status:          ॥ Paused
+Message:         CanaryPauseStep
+Strategy:        Canary
+  Step:          1/4
+  SetWeight:     33
+  ActualWeight:  33
+Images:          argoproj/rollouts-demo:blue (stable)
+                 argoproj/rollouts-demo:yellow (canary)
+Replicas:
+  Desired:       3
+  Current:       3
+  Updated:       1
+  Ready:         3
+  Available:     3
+
+NAME                                        KIND        STATUS     AGE    INFO
+⟳ rollout-canary                            Rollout     ॥ Paused   5m31s
+├──# revision:2
+│  └──⧉ rollout-canary-59dcc859bd           ReplicaSet  ✔ Healthy  62s    canary
+│     └──□ rollout-canary-59dcc859bd-rxnqh  Pod         ✔ Running  62s    ready:1/1
+└──# revision:1
+   └──⧉ rollout-canary-65ccbcd464           ReplicaSet  ✔ Healthy  5m31s  stable
+      ├──□ rollout-canary-65ccbcd464-fftpr  Pod         ✔ Running  5m31s  ready:1/1
+      └──□ rollout-canary-65ccbcd464-smdx9  Pod         ✔ Running  5m31s  ready:1/1v
 ```
 
 Check application on `localhost:8080` (ArgoCD)
@@ -94,29 +132,28 @@ Namespace:       default
 Status:          ॥ Paused
 Message:         CanaryPauseStep
 Strategy:        Canary
-  Step:          1/8
-  SetWeight:     20
+  Step:          1/4
+  SetWeight:     33
   ActualWeight:  33
 Images:          argoproj/rollouts-demo:blue (stable)
                  argoproj/rollouts-demo:yellow (canary)
 Replicas:
-  Desired:       2
+  Desired:       3
   Current:       3
   Updated:       1
   Ready:         3
   Available:     3
 
-NAME                                        KIND        STATUS     AGE   INFO
-⟳ rollout-canary                            Rollout     ॥ Paused   2m7s
+NAME                                        KIND        STATUS     AGE    INFO
+⟳ rollout-canary                            Rollout     ॥ Paused   5m31s
 ├──# revision:2
-│  └──⧉ rollout-canary-59dcc859bd           ReplicaSet  ✔ Healthy  30s   canary
-│     └──□ rollout-canary-59dcc859bd-4sh55  Pod         ✔ Running  30s   ready:1/1
+│  └──⧉ rollout-canary-59dcc859bd           ReplicaSet  ✔ Healthy  62s    canary
+│     └──□ rollout-canary-59dcc859bd-rxnqh  Pod         ✔ Running  62s    ready:1/1
 └──# revision:1
-   └──⧉ rollout-canary-65ccbcd464           ReplicaSet  ✔ Healthy  2m7s  stable
-      ├──□ rollout-canary-65ccbcd464-4lgwj  Pod         ✔ Running  2m7s  ready:1/1
-      └──□ rollout-canary-65ccbcd464-m5xff  Pod         ✔ Running  2m7s  ready:1/1
+   └──⧉ rollout-canary-65ccbcd464           ReplicaSet  ✔ Healthy  5m31s  stable
+      ├──□ rollout-canary-65ccbcd464-fftpr  Pod         ✔ Running  5m31s  ready:1/1
+      └──□ rollout-canary-65ccbcd464-smdx9  Pod         ✔ Running  5m31s  ready:1/1
 ```
-
 
 ## Promote Rollout
 
