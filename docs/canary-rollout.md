@@ -16,7 +16,7 @@ We will deploy rollouts with `podAntiAffinity` to limit rollout pod per one node
           topologyKey: "kubernetes.io/hostname"
 ```
 
-Create blue-green-rollout aaplication
+Create canary-rollout aplication
 
 ```
 argocd app create canary-rollouts --repo https://github.com/RRoundTable/argocd-with-argo-rollouts --path canary-rollouts --dest-server https://kubernetes.default.svc --dest-namespace default
@@ -179,30 +179,30 @@ kubectl argo rollouts get rollouts canary-rollout
 ```
 Name:            rollout-canary
 Namespace:       default
-Status:          ◌ Progressing
-Message:         old replicas are pending termination
+Status:          ॥ Paused
+Message:         CanaryPauseStep
 Strategy:        Canary
-  Step:          4/8
-  SetWeight:     60
-  ActualWeight:  50
+  Step:          3/4
+  SetWeight:     66
+  ActualWeight:  66
 Images:          argoproj/rollouts-demo:blue (stable)
                  argoproj/rollouts-demo:yellow (canary)
 Replicas:
-  Desired:       2
+  Desired:       3
   Current:       3
   Updated:       2
-  Ready:         2
-  Available:     2
+  Ready:         3
+  Available:     3
 
-NAME                                        KIND        STATUS               AGE    INFO
-⟳ rollout-canary                            Rollout     ◌ Progressing        7m16s
+NAME                                        KIND        STATUS     AGE    INFO
+⟳ rollout-canary                            Rollout     ॥ Paused   2m55s
 ├──# revision:2
-│  └──⧉ rollout-canary-59dcc859bd           ReplicaSet  ◌ Progressing        5m39s  canary
-│     ├──□ rollout-canary-59dcc859bd-4sh55  Pod         ✔ Running            5m39s  ready:1/1
-│     └──□ rollout-canary-59dcc859bd-sln82  Pod         ◌ ContainerCreating  15s    ready:0/1
+│  └──⧉ rollout-canary-59dcc859bd           ReplicaSet  ✔ Healthy  2m32s  canary
+│     ├──□ rollout-canary-59dcc859bd-p9dr9  Pod         ✔ Running  2m32s  ready:1/1
+│     └──□ rollout-canary-59dcc859bd-7k245  Pod         ✔ Running  15s    ready:1/1
 └──# revision:1
-   └──⧉ rollout-canary-65ccbcd464           ReplicaSet  ✔ Healthy            7m16s  stable
-      └──□ rollout-canary-65ccbcd464-m5xff  Pod         ✔ Running            7m16s  ready:1/1
+   └──⧉ rollout-canary-65ccbcd464           ReplicaSet  ✔ Healthy  2m55s  stable
+      └──□ rollout-canary-65ccbcd464-xrhw2  Pod         ✔ Running  2m55s  ready:1/1
 ```
 
 After a about 40s,
@@ -210,73 +210,41 @@ After a about 40s,
 ```
 Name:            rollout-canary
 Namespace:       default
-Status:          ✔ Healthy
+Status:          ◌ Progressing
+Message:         updated replicas are still becoming available
 Strategy:        Canary
-  Step:          8/8
+  Step:          4/4
   SetWeight:     100
   ActualWeight:  100
-Images:          argoproj/rollouts-demo:yellow (stable)
+Images:          argoproj/rollouts-demo:yellow (canary)
 Replicas:
-  Desired:       2
-  Current:       2
-  Updated:       2
+  Desired:       3
+  Current:       3
+  Updated:       3
   Ready:         2
   Available:     2
 
-NAME                                        KIND        STATUS        AGE    INFO
-⟳ rollout-canary                            Rollout     ✔ Healthy     8m51s
+NAME                                        KIND        STATUS         AGE    INFO
+⟳ rollout-canary                            Rollout     ◌ Progressing  3m34s
 ├──# revision:2
-│  └──⧉ rollout-canary-59dcc859bd           ReplicaSet  ✔ Healthy     7m14s  stable
-│     ├──□ rollout-canary-59dcc859bd-4sh55  Pod         ✔ Running     7m14s  ready:1/1
-│     └──□ rollout-canary-59dcc859bd-sln82  Pod         ✔ Running     110s   ready:1/1
+│  └──⧉ rollout-canary-59dcc859bd           ReplicaSet  ◌ Progressing  3m11s  canary
+│     ├──□ rollout-canary-59dcc859bd-p9dr9  Pod         ✔ Running      3m11s  ready:1/1
+│     ├──□ rollout-canary-59dcc859bd-7k245  Pod         ✔ Running      54s    ready:1/1
+│     └──□ rollout-canary-59dcc859bd-5ldz4  Pod         ◌ Pending      0s     ready:0/1
 └──# revision:1
-   └──⧉ rollout-canary-65ccbcd464           ReplicaSet  • ScaledDown  8m51s
-
+   └──⧉ rollout-canary-65ccbcd464           ReplicaSet  • ScaledDown   3m34s  stable
+      └──□ rollout-canary-65ccbcd464-xrhw2  Pod         ◌ Terminating  3m34s  ready:1/1
 ```
 
+## Delete `rollout-canary`
 
-Check Pod, active pod is deleted and only preview pod is running.
-
+Delete ArgoCD Application `canary-rollouts`
 ```
-kubectl get pod | grep bluegreen
-```
-
-```
-rollout-bluegreen-674b45d9b4-nwbsn                  1/1     Running   0          12m
-rollout-bluegreen-674b45d9b4-pc5k9                  1/1     Running   0          12m
-```
-
-Check Application on ArgoCD. As you can see APP Health is `Healthy` status.
-<img width="800" alt="image" src="https://user-images.githubusercontent.com/27891090/195974275-f70135c4-06ad-4efb-b4a5-dbe6fc593c8c.png">
-
-
-
-Check `rollout-bluegreen-active`
-
-```
-kubectl port-forward svc/rollout-bluegreen-active 3080:80
-```
-<img width="500" alt="image" src="https://user-images.githubusercontent.com/27891090/195974705-ac67079a-a3cd-496b-b6d6-08baa36d520a.png">
-
-`rollout-bluegreen-preview`
-
-```
-kubectl port-forward svc/rollout-bluegreen-preview 3080:80
-```
-<img width="500" alt="image" src="https://user-images.githubusercontent.com/27891090/195974114-0cfeebe8-9e93-4198-949b-0ade3dbce520.png">
-
-`rollout-bluegreen-preview` and `rollout-bluegreen-active` are same because rollout completed.
-
-
-## Delete `rollout-bluegreen`
-
-Delete ArgoCD Application `blue-green-rollouts`
-```
-argocd app delete blue-green-rollouts
+argocd app delete canary-rollouts
 ```
 
 Check pod
 
 ```
-kubectl get pod | grep bluegreen
+kubectl get pod | grep canary
 ```
