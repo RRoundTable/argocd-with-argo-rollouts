@@ -59,7 +59,7 @@ NAME                                        KIND        STATUS     AGE  INFO
 
 Check application on `localhost:8080` (ArgoCD)
 
-![]()
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/27891090/196194366-315671b6-5556-4867-b33c-12fc58ce3432.png">
 
 Check canary svcs are created.
 
