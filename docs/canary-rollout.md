@@ -118,8 +118,6 @@ Rollout with image update.
 kubectl argo rollouts set image rollout-canary rollouts-demo=argoproj/rollouts-demo:yellow
 ```
 
-
-
 Check `rollout-bluegreen`
 
 ```
@@ -154,6 +152,12 @@ NAME                                        KIND        STATUS     AGE    INFO
       ├──□ rollout-canary-65ccbcd464-fftpr  Pod         ✔ Running  5m31s  ready:1/1
       └──□ rollout-canary-65ccbcd464-smdx9  Pod         ✔ Running  5m31s  ready:1/1
 ```
+
+Check Application on ArgoCD, `localhost:8080`
+
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/27891090/196196226-69d5ef19-eb99-4f87-bd7f-692ed0d7b289.png">
+
+
 
 ## Promote Rollout
 
